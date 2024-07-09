@@ -1,0 +1,12 @@
+FROM golang:1.22-bookworm AS builder
+
+WORKDIR /app
+COPY go.mod go.sum /src/
+RUN cd /src && go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -a -o prover -trimpath cmd/prover/main.go
+
+FROM scratch
+WORKDIR /root/
+COPY --from=builder /app/prover prover
+CMD ["./prover"]

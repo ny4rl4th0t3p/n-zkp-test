@@ -1,0 +1,25 @@
+services:
+  verifier:
+    build:
+      context: .
+      dockerfile: Dockerfile.verifier
+    restart: unless-stopped
+    ports:
+      - "50051:50051"
+    environment:
+      - ZKP_H=100
+      - ZKP_G=5
+      - ZKP_Q=63
+
+  prover:
+    build:
+      context: .
+      dockerfile: Dockerfile.prover
+    restart: unless-stopped
+    depends_on:
+      - verifier
+    environment:
+      - ZKP_VERIFIER_URL=verifier:50051
+      - ZKP_H=100
+      - ZKP_G=5
+      - ZKP_Q=63

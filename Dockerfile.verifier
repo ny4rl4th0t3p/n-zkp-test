@@ -1,0 +1,13 @@
+FROM golang:1.22-bookworm AS builder
+
+WORKDIR /app
+COPY go.mod go.sum /src/
+RUN cd /src && go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -a -o verifier -trimpath cmd/verifier/main.go
+
+FROM scratch
+WORKDIR /root/
+COPY --from=builder /app/verifier verifier
+EXPOSE 50051
+CMD ["./verifier"]
