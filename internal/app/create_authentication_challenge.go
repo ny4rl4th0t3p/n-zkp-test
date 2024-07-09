@@ -40,7 +40,7 @@ func (ru CreateAuthenticationChallenge) Exec(ctx context.Context, req *interacto
 ) {
 	userID := req.GetUser()
 
-	slog.Info("Creating Authentication Challenge for user", "user", userID)
+	slog.Info("creating authentication challenge for user", "user", userID)
 
 	_, err := ru.ar.GetUserRegistration(ctx, userID)
 	if err != nil {

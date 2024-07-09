@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"log"
+	"log/slog"
 
 	"practical-case-test/internal/domain/auth"
 	interactor "practical-case-test/internal/interactor/proto"
@@ -42,7 +42,7 @@ func (ru RegisterUser) Exec(ctx context.Context, req *interactor.RegisterRequest
 	y1 := req.GetY1()
 	y2 := req.GetY2()
 
-	log.Printf("Received Registration Request from user %s, y1: %v, y2: %v\n", user, y1, y2)
+	slog.Info("received registration request\n", "user", user, "y1", y1, "y2", y2)
 
 	newUser, err := auth.NewUser(user, y1, y2)
 	if err != nil {

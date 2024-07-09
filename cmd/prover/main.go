@@ -51,12 +51,14 @@ func main() {
 	sessionID, err := client.Login(context.Background(), userName, userPassword)
 	if err != nil {
 		slog.Error("login failed", "error", err)
+		slog.Info("sleeping for 30 seconds after error")
+		time.Sleep(30 * time.Second)
 		return
 	}
 
-	log.Printf("Successfully logged in with session ID: %s", sessionID)
+	slog.Info("successfully logged", "session id", sessionID)
 
-	slog.Info("Sleeping for 60 seconds before killing prover")
+	slog.Info("sleeping for 60 seconds before killing prover")
 
 	time.Sleep(60 * time.Second)
 }
